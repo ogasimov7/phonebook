@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: phonebook
+data:
+  frontend-url: localhost:8080
+  database_url: mongodb://orxan:<insertYourPassword>@docdb-2022-07-12-13-32-21.cluster-cgt5jjavafvz.us-east-1.docdb.amazonaws.com:27017/?ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
