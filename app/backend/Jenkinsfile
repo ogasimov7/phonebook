@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+
+    environment {
+		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+	}
+    
+    stages {
+        stage("Git checkout") {
+            steps {
+                deleteDir()
+                git branch: 'master',
+                    url   : 'https://github.com/ogasimov7/phonebook.git'
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/master']],
+                          extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'phonebook']],
+                          userRemoteConfigs: [[credentialsId: 'github', url: 'git@github.com:ogasimov7/phonebook.git']]
+                          ])
+            }
+        }        
+        stage('Make some actions depending on ENV') {
+            steps {
+                script {
+                    if (params.ENV == "TEST") {
+                        sh 'echo "This id TEST env"'
+                    } elif (params.ENV == "PROD") {
+                        sh 'echo "This id PROD env"'
+                    }
+                }
+            }
+        }
+        stage('Build docker image') {
+            steps {
+                sh "docker build --file Dockerfile -t localhost:80/backend:v$BUILD_NUMBER backend/"
+            }
+        }
+        stage('Login to DockerHub') {
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
+        stage('Push docker image to registry') {
+            steps {
+                sh "docker push localhost:80/backend:v$BUILD_NUMBER"
+            }
+        }
+        stage('Update deployment image') {
+            steps {
+                sh 'sed -i "s/image: localhost:80\\/backend:v1.0.0/image: localhost:80\\/backend:v$BUILD_NUMBER/g"
+                k8s/backend/deployment.yml'
+                sh 'cat ../k8s/backend/deployment.yml'
+            }
+        }
+        stage('Update app in k8s') {
+            steps {
+                sh "kubectl apply -f ../k8s/backend/"
+            }
+        }
+    }    
+    post {
+        always {
+            sh(label: "Cleanup", script: """#!/bin/bash
+                docker logout
+            """)
+        }
+    }
+}
