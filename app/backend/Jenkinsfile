@@ -53,13 +53,13 @@ pipeline {
         stage('Update deployment image') {
             steps {
                 sh 'sed -i "s/image: localhost:80\\/backend:v1.0.0/image: localhost:80\\/backend:v$BUILD_NUMBER/g"
-                k8s/backend/deployment.yml'
-                sh 'cat ../k8s/backend/deployment.yml'
+                kubernet/backend/deployment.yml'
+                sh 'cat ../kubernet/backend/deployment.yml'
             }
         }
         stage('Update app in k8s') {
             steps {
-                sh "kubectl apply -f ../k8s/backend/"
+                sh "kubectl apply -f ../kubernet/backend/"
             }
         }
     }    
