@@ -1,5 +1,18 @@
+Sonerqube for m1 silicon:
 
-Commands here:
+docker pull mwizner/sonarqube:8.9.5-community
+
+docker images
+REPOSITORY           TAG               IMAGE ID       
+mwizner/sonarqube    8.9.5-community   f5e2e7d2d122 
+
+docker create --name sonarqubeapp -p 9000:9000 f5e2e7d2d122
+docker start sonarqubeapp
+http://localhost:9000
+
+
+
+Kubernetes:
 
 kubectl apply -f filename.yml
 kubectl get nodes
