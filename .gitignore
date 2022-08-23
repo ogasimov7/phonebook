@@ -5,6 +5,8 @@ mongo_data/
 node_modules/
 requests/
 .dockerignore
-.json
+package.json
+package-lock.json
+nginx.conf
 
 

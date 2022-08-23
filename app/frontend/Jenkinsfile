@@ -58,7 +58,7 @@ pipeline {
         }
         stage('Update app in k8s') {
             steps {
-                sh "kubectl apply -f ../kubernet/frontend/"
+                sh "kubectl apply -f ../kubernet/frontend/deployment.yml"
             }
         }
     }

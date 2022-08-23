@@ -59,7 +59,7 @@ pipeline {
         }
         stage('Update app in k8s') {
             steps {
-                sh "kubectl apply -f ../kubernet/backend/"
+                sh "kubectl apply -f ../kubernet/backend/deployment.yml"
             }
         }
     }    
