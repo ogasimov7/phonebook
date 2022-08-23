@@ -102,6 +102,5 @@ resource "aws_lb" "test" {
 
 
   enable_deletion_protection = true
-
 }
 
