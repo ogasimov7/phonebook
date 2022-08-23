@@ -1,9 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-app/backend/mongo_data
-app/backend/node_modules
-app/backend/.dockerignore
-app/backend/.json
+mongo_data/
+node_modules/
+requests/
+.dockerignore
+.json
 
 
