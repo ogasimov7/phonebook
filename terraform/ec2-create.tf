@@ -69,8 +69,8 @@ resource "aws_db_instance" "db" {
   engine_version       = "4.0.0"
   instance_class       = "db.t3.medium"
   db_name              = "phbookdb"
-  username             = "orxan"
-  password             = "12345678"
+  username             = ""
+  password             = ""
   skip_final_snapshot  = true
 }
 resource "aws_launch_template" "aws_launch" {
@@ -84,7 +84,7 @@ resource "aws_launch_template" "aws_launch" {
 resource "aws_autoscaling_group" "autoscaling" {
   availability_zones = ["us-east-1a", "us-east-1b"]
   max_size           = 10
-  desired_capacity   = 2
+  desired_capacity   = 4
   min_size           = 2
   health_check_grace_period = 300
   launch_template {
